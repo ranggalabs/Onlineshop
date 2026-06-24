@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { heroSectionData } from '../assets/assets'
 import { Link } from 'react-router-dom'
-import { BikeIcon } from 'lucide-react'
+import { BikeIcon, LockIcon, MailIcon, UserIcon, Loader2Icon, } from 'lucide-react'
 
 const Login = () => {
     const [isLoginState, setIsLoginState] = useState(true)
@@ -38,7 +38,7 @@ const Login = () => {
                         <h1 className="text-2xl font-semibold text-app-green mb-2">
                             {isLoginState ? "Sign in to your account" : "Sign up for an account"}
                         </h1>
-                        <p>
+                        <p className="text-sm text-app-text-light">
                             {isLoginState ? "Don't have an account?" : "Already have an account?"}
                             <button onClick={() => setIsLoginState(!isLoginState)} className="text-orange-500 ml-1 font-semibold hover:text-orange-600 transition-colors">
                                 {isLoginState ? "Create One" : "Sign in"}
@@ -46,6 +46,34 @@ const Login = () => {
                         </p>
                     </div>
                     {/* Login / Register */}
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        {!isLoginState && (
+                            <label className="text-sm flex flex-col gap-1"> Name
+                                <div className="relative">
+                                    <UserIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-app-text-light" />
+                                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} required placeholder="Your Name" className="w-full pl-11 pr-4 py-3 text-sm bg-white rounded-xl border not-focus:border-app-border transition-all" />
+
+                                </div>
+                            </label>
+                        )}
+                        <label className="text-sm flex flex-col gap-1"> Email Address
+                            <div className="relative">
+                                <MailIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-app-text-light" />
+                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" className="w-full pl-11 pr-4 py-3 text-sm bg-white rounded-xl border not-focus:border-app-border transition-all" />
+
+                            </div>
+                        </label>
+                        <label className="text-sm flex flex-col gap-1"> Password
+                            <div className="relative">
+                                <LockIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-app-text-light" />
+                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" className="w-full pl-11 pr-4 py-3 text-sm bg-white rounded-xl border not-focus:border-app-border transition-all" />
+
+                            </div>
+                        </label>
+                        <button type="submit" disabled={loading} className="flex-center w-full py-3 bg-green-950 text-white font-semibold rounded-xl hover:bg-green-900 transition-colors disabled:opacity-50">
+                            {loading ? <Loader2Icon className="animate-spin" /> : isLoginState ? "Sign in" : "Sign Up"}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

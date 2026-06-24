@@ -11,6 +11,7 @@ import Checkout from './pages/Checkout'
 import MyOrders from './pages/MyOrders'
 import OrderTracking from './pages/OrderTracking'
 import Addreses from './pages/Addreses'
+import ProtectedRoute from './components/ProtectedRoute'
 
 
 const App = () => {
@@ -19,19 +20,19 @@ const App = () => {
       <Toaster position="top-right" toastOptions={{ duration: 3000, style: { background: '#1B3022', color: "#fff", borderRadius: "12px", fontSize: "14px" } }} />
       <Routes>
         {/* AUTH PAGES - NO NAVBAR/FOOTER*/}
-        <Route path='/Login' element={<Login />}></Route>
+        <Route path='/Login' element={<Login />} />
         {/* MAIN PAGES - WITH NAVBAR/FOOTER */}
         <Route path='/' element={<AppLayout />}>
-          <Route index element={<Home />}></Route>
-          <Route path='products' element={<Products />}></Route>
-          <Route path='products/:id' element={<ProductPage />}></Route>
-          <Route path='search' element={<SearchResults />}></Route>
-          <Route path='deals' element={<FlashDeals />}></Route>
-          <Route>
-            <Route path="checkout" element={< Checkout />}></Route>
-            <Route path="orders" element={< MyOrders />}></Route>
-            <Route path="orders/:id" element={< OrderTracking />}></Route>
-            <Route path="Addresses" element={< Addreses />}></Route>
+          <Route index element={<Home />} />
+          <Route path='products' element={<Products />} />
+          <Route path='products/:id' element={<ProductPage />} />
+          <Route path='search' element={<SearchResults />} />
+          <Route path='deals' element={<FlashDeals />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="checkout" element={< Checkout />} />
+            <Route path="orders" element={< MyOrders />} />
+            <Route path="orders/:id" element={< OrderTracking />} />
+            <Route path="Addresses" element={< Addreses />} />
           </Route>
         </Route>
       </Routes>
