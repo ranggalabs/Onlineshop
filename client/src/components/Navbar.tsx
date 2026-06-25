@@ -1,20 +1,45 @@
-import { useNavigate, Link } from "react-router-dom" // Perbaikan: Tambahkan Link di sini
-import { useState } from "react"
-import { BikeIcon, ChevronDownIcon, MapPinIcon, MenuIcon, PackageIcon, SearchIcon, ShoppingCartIcon, UserIcon, XIcon } from "lucide-react"
+import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import {
+    ArrowUpRightIcon,
+    BikeIcon,
+    ChevronDownIcon,
+    LogOutIcon,
+    MapPinIcon,
+    MenuIcon,
+    PackageIcon,
+    SearchIcon,
+    ShieldIcon,
+    ShoppingCartIcon,
+    UserIcon,
+    XIcon
+} from "lucide-react";
 
 const Navbar = () => {
     const user: any = { name: "Rangga Prasetya", email: "rangga@gmail.com", isAdmin: true }
     const { cartCount, setIsCartOpen } = {
         cartCount: 5,
         setIsCartOpen: (_data: any) => { }
+    };
+    const [searchQuery, setSearchQuery] = useState("");
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSearch = (e: React.SubmitEvent) => {
+        e.preventDefault()
+        if (searchQuery.trim()) {
+            navigate('/search?q=${encodedURlComponent(searchQuery.trim())}')
+            setSearchQuery("")
+        }
     }
-    const [searchQuery, setSearchQuery] = useState("")
-    const [userMenuOpen, setUserMenuOpen] = useState(false) // Perbaikan: Gunakan boolean false (tanpa kutip)
-    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        setUserMenuOpen(false)
+        navigate("/")
+    }
 
     return (
         <nav className="bg-white sticky top-0 z-50 border-b border-app-border">
-            {/* Perbaikan: lg:px8 menjadi lg:px-8 */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 gap-4">
                 {/* Logo  */}
                 <Link to='/' className="flex items-center gap-2 text-[22px] font-medium shrink-0">
@@ -30,11 +55,9 @@ const Navbar = () => {
                     </div>
 
                     {/* Search */}
-                    <form className="hidden sm:flex flex-1 max-w-sm text-xs sm:text-sm">
+                    <form onSubmit={handleSearch} className="hidden sm:flex flex-1 max-w-sm text-xs sm:text-sm">
                         <div className="relative w-full">
-                            {/* Perbaikan: top 1/2 - translate-y-1/2 menjadi top-1/2 -translate-y-1/2 */}
                             <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
-                            {/* Perbaikan: self closing input & tambahkan spasi sebelum className */}
                             <input
                                 type="text"
                                 placeholder="Search for groceries...."
@@ -51,7 +74,8 @@ const Navbar = () => {
                         <button className="relative p-2 rounded-xl" onClick={() => setIsCartOpen(true)}>
                             <ShoppingCartIcon className="size-5 text-zinc-900" />
                             {cartCount > 0 && (
-                                <span className="absolute -top-1 right-1 size-4 bg-app-orange text-white text-[10px] rounded-full flex-center">
+
+                                <span className="absolute -top-1 right-1 size-4 bg-app-orange text-white text-[10px] rounded-full flex items-center justify-center">
                                     {cartCount}
                                 </span>
                             )}
@@ -60,18 +84,28 @@ const Navbar = () => {
                         {/* User */}
                         <div className="relative">
                             {user ? (
-                                <button className="flex items-center gap-2 p-2">
-                                    <div className="size-7 rounded-full bg-green-950 text-white flex-center">
+                                <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-2 p-2">
+                                    {/* FIX 2: Mengganti 'flex-center' dengan flexbox standar Tailwind agar inisial nama presisi di tengah */}
+                                    <div className="size-7 rounded-full bg-green-950 text-white flex items-center justify-center">
                                         {user.name.charAt(0).toUpperCase()}
                                     </div>
                                     <ChevronDownIcon className="size-3 text-zinc-500" />
                                 </button>
                             ) : (
-                                <div className=" flex-center gap-2">
-                                    <Link to='/Login' className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-screen-950 rounded-full hover:bg-screen-950-light transition-colors">
+
+                                <div className="flex items-center justify-center gap-2">
+
+
+                                    <Link to='/Login' className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-950 rounded-full hover:bg-green-900 transition-colors">
                                         <UserIcon size={16} />Sign In
                                     </Link>
-                                    {userMenuOpen ? <XIcon className="md:hidden" onClick={() => setUserMenuOpen(!userMenuOpen)} /> : <MenuIcon className="md:hidden" onClick={() => setUserMenuOpen(!userMenuOpen)} />}
+
+
+                                    {userMenuOpen ? (
+                                        <XIcon className="md:hidden cursor-pointer" onClick={() => setUserMenuOpen(!userMenuOpen)} />
+                                    ) : (
+                                        <MenuIcon className="md:hidden cursor-pointer" onClick={() => setUserMenuOpen(!userMenuOpen)} />
+                                    )}
                                 </div>
                             )}
 
@@ -92,6 +126,20 @@ const Navbar = () => {
 
                                             {user && <Link to='/addreses' className="dropdown-link"><MapPinIcon size={16} />Adresses</Link>}
 
+                                            <Link to='/products' className="dropdown-link md:hidden"><ArrowUpRightIcon size={16} />Products</Link>
+
+                                            <Link to='/deals' className="dropdown-link md:hidden"><ArrowUpRightIcon size={16} />deals</Link>
+
+                                            {user?.isAdmin && (
+                                                <Link to='/admin/products' className="dropdown-link"><ShieldIcon className="text-app-orange-dark" size={16} /><span className="text-app-orange-dark">Admin Panel</span></Link>
+                                            )}
+                                            {user && (
+                                                <div onClick={handleLogout} className="border-t border-app-border pt-1">
+                                                    <button className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors">
+                                                        <LogOutIcon size={16} />Logout
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </>
@@ -101,7 +149,7 @@ const Navbar = () => {
                 </div>
             </div>
         </nav>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;
