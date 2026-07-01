@@ -19,15 +19,35 @@ A modern, responsive online shop frontend built with React, Vite, TailwindCSS, a
 ## 📂 Project Structure
 ```
 client/
-├── public/         # Static assets
+├── public/             # Static assets
 └── src/
-    ├── assets/     # Images, icons, and mock data
-    ├── components/ # Reusable UI components
-    ├── context/    # React Context providers
-    ├── pages/      # Route pages (Home, Products, Checkout, etc.)
-    ├── types/      # TypeScript type definitions
-    ├── App.tsx     # Main application component
-    └── main.tsx    # Application entry point
+    ├── assets/         # Images, icons, and mock data
+    ├── components/     # Reusable UI components
+    │   ├── Banner.tsx            # Session-based announcement banner
+    │   ├── Features.tsx          # Store features/advantages grid
+    │   ├── Hero.tsx              # Dynamic hero header section
+    │   ├── HomeCategory.tsx      # Category slider navigation
+    │   ├── Navbar.tsx            # Main header with search and user menu
+    │   ├── PopularProducts.tsx   # Popular products display grid
+    │   ├── ProductsCard.tsx      # Reusable product card component
+    │   └── ProtectedRoute.tsx    # Route guard wrapper for auth
+    ├── context/        # React Context providers
+    ├── pages/          # Application route pages
+    │   ├── Addreses.tsx          # User addresses management page
+    │   ├── AppLayout.tsx         # Shared page layout (Banner + Navbar + Main)
+    │   ├── Checkout.tsx          # Shopping checkout page
+    │   ├── FlashDeals.tsx        # Flash sales and promotions page
+    │   ├── Home.tsx              # Landing page integrating sections
+    │   ├── Login.tsx             # Login / Sign up authentication form
+    │   ├── MyOrders.tsx          # Order history and listing page
+    │   ├── OrderTracking.tsx     # Order tracking and map visualizer
+    │   ├── ProductPage.tsx       # Detail view of a single product
+    │   ├── Products.tsx          # Product listing and filtering page
+    │   └── SearchResults.tsx     # Results for searched keywords page
+    ├── types/          # TypeScript definitions
+    │   └── index.ts              # Data type interfaces (Product, etc.)
+    ├── App.tsx         # Main application routes wrapper
+    └── main.tsx        # Application entry point
 ```
 
 ## 🚀 Getting Started
